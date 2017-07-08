@@ -58,10 +58,11 @@ int main() {
 
         // Масштабирование
         int side = abs(sticker1.x - sticker2.x);
-        cv::resize(dino, dino, cv::Size(side, side));
+        Mat imgForPaste;
+        cv::resize(dino, imgForPaste, cv::Size(side, side));
         // Слияние коартинок
         Mat roi = frame(Rect(min(sticker1.x, sticker2.x), min(sticker1.y, sticker2.y), side, side));    // подматрица frame
-        dino.copyTo(roi);
+        imgForPaste.copyTo(roi);
 
         imshow("MyVideo", frame); //show the frame in "MyVideo" window
         if(waitKey(30) == 27) {
