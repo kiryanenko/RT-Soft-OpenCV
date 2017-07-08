@@ -39,35 +39,6 @@ void idle() {
     glutPostRedisplay(); // Post a re-paint request to activate display()
 }
 
-
-void loadGLTextures() {
-    // сv::mat как текстура - загрузка
-    glEnable(GL_TEXTURE_2D);
-    // Create Texture
-    GLuint *texture;
-    glGenTextures(1, texture);
-    glBindTexture(GL_TEXTURE_2D, texture[0]); // 2d texture (x and y size)
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); // scale linearly when image bigger than texture
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-    // scale linearly when image smalled than texture
-    cv::Mat texture_cv = cv::imread("imgs/test.bmp");
-    // 2d texture, level of detail 0 (normal), 3 components (red, green, blue), x size from image, y size from image,
-    // border 0 (normal), rgb color data, unsigned byte data, and finally the data itself.
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, texture_cv.cols, texture_cv.rows, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_cv.data);
-    glBindTexture(GL_TEXTURE_2D, texture[0]); // choose the texture to use
-
-    // сv::mat как текстура - отображаем
-    glColor3f(1,1,1); // set global color to white, otherwise this color will be (somehow) added to the texture
-    glBegin(GL_QUADS);
-    float x = 0.1;
-    float y = 0.1;
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-x, -y, 0.0f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f( x, -y, 0.0f);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f( x, y, 0.0f);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f(-x, y, 0.0f);
-    glEnd();
-}
-
 // Консольное приложение с glut
 int main(int argc, char** argv) {
     using namespace cv;
