@@ -19,7 +19,6 @@ void display() {
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture); // 2d texture (x and y size)
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); // scale linearly when image bigger than texture
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, 3, frame.cols, frame.rows, 0, GL_BGR, GL_UNSIGNED_BYTE, frame.data);
     glBindTexture(GL_TEXTURE_2D, texture); // choose the texture to use
 
