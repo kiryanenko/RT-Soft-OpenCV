@@ -3,6 +3,7 @@
 #include <GL/glut.h> // GLUT, include glu.h and gl.h
 
 cv::VideoCapture *cap;
+GLuint texture;
 
 void display() {
     using namespace cv;
@@ -15,7 +16,7 @@ void display() {
         exit(0);
     }
 
-    GLuint texture;
+
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture); // 2d texture (x and y size)
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); // scale linearly when image bigger than texture
