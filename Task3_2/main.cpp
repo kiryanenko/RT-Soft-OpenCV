@@ -53,21 +53,15 @@ int main() {
         }
 
         recogniseStickersByThreshold(frame, stickersCoords);
-        cout << "size" << stickersCoords.size() << endl;
         cv::Point sticker1 = *max_element(stickersCoords.front().begin(), stickersCoords.front().end(), cmpPoint);
         cv::Point sticker2 = *min_element(stickersCoords.back().begin(), stickersCoords.back().end(), cmpPoint);
-        // Масштабирую
-        int side = abs(sticker2.x - sticker1.x);
+
+        // Масштабирование
+        int side = abs(sticker1.x - sticker2.x);
         cv::resize(dino, dino, cv::Size(side, side));
-
-
-        // test rect
-        cv::rectangle(frame, Rect(min(sticker1.x, sticker2.x), min(sticker1.y, sticker2.y), side, side), cv::Scalar(0,250,0),2);
-
-
-        //cvSetImageROI( frame., cvRect(min(sticker1.x, sticker2.x), min(sticker1.y, sticker2.y), side, side) ); // устанавливаем ROI
-        //cvCopy(&dino, &frame);          // копируем изображение
-        //cvResetImageROI(&frame);        // сбрасываем ROI
+        // Слияние коартинок
+        Mat roi = frame(Rect(min(sticker1.x, sticker2.x), min(sticker1.y, sticker2.y), side, side));    // подматрица frame
+        dino.copyTo(roi);
 
         imshow("MyVideo", frame); //show the frame in "MyVideo" window
         if(waitKey(30) == 27) {
