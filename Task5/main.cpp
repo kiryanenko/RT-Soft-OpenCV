@@ -71,7 +71,7 @@ std::vector< DMatch > Similar::getGoodMatches(Mat descr) {
     FlannBasedMatcher matcher; // FLANN - Fast Library for Approximate Nearest Neighbors
     vector< vector< DMatch> > matches;
     matcher.knnMatch( m_cmpDescriptors, descr, matches, 2 ); // find the best 2 matches of each descriptor
-    std::vector< DMatch > goodMatches;
+    vector< DMatch > goodMatches;
     for (int k = 0; k < std::min(m_cmpDescriptors.rows - 1, (int)matches.size()); k++) {
         if ((matches[k][0].distance < 0.6 * (matches[k][1].distance)) && ((int) matches[k].size() <= 2 &&
                                                                           (int) matches[k].size() > 0)) {
