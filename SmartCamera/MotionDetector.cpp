@@ -2,8 +2,8 @@
 
 #include <opencv2/optflow/motempl.hpp>
 
-const double MotionDetector::MOTION_THRESHOLD = 10;
-const double MotionDetector::MIN_CONTOUR_AREA = 150;
+const double MotionDetector::MOTION_THRESHOLD = 7;
+const double MotionDetector::MIN_CONTOUR_AREA = 3000;
 
 MotionDetector::MotionDetector(const cv::Size &imageSize, double cycleTime) :
         m_previousImage( imageSize, CV_8UC1 ),
@@ -49,7 +49,7 @@ void MotionDetector::detectMovingRegions(const cv::Mat &currentFrame, double tim
     // 7. Отбрасываем все регионы, площадь которых меньше некоторого значения (MIN_CONTOUR_AREA).
     std::vector<cv::Rect>::iterator endIt = targets.end();
     for( std::vector<cv::Rect>::iterator it = targets.begin( ); it != endIt; ++it ) {
-        if( cv::countNonZero( mask( * it ) ) < MIN_CONTOUR_AREA )
+        if( cv::countNonZero( mask( * it ) ) < MIN_CONTOUR_AREA || (*it).width * (*it).width < MIN_CONTOUR_AREA)
             targets.erase( it );
     }
 
