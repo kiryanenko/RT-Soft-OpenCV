@@ -18,7 +18,14 @@ int main(int argc, char* argv[]) {
     cap.read(frame);
     MotionDetector motionDetector(frame.size(), CYCLE_TIME);
 
-    Map map("map.png", cv::Point(300, 380), cv::Point(140, 100), 25, frame.size(), 2000000);
+    Map map("map.png",              // Изображение карты
+            cv::Point(300, 380),    // Положение камеры на карте
+            cv::Point(140, 100),    // Положение точки на карте, куда смотрит центр камеры
+            25,                     // Угол наклона камеры по вертикали
+            frame.size(),           // Размер фрейма с камеры
+            700,                    // Количество пикселей на 1 градус на фрейме с камеры
+            100                     // Поправка по OY (выделяется туловище но не ноги, для устранения этого ввёл эту поправку)
+    );
 
     auto start = std::chrono::system_clock::now();
 
@@ -43,8 +50,8 @@ int main(int argc, char* argv[]) {
         cv::Mat mapImg;
         map.drawPositions(mapImg, targets);
 
-        cv::imshow("SmartCamera", frame);   //show the frame in window
-        cv::imshow("Map", mapImg);          //show the map in window
+        cv::imshow("SmartCamera", frame);   // show the frame in window
+        cv::imshow("Map", mapImg);          // show the map in window
 
         if(cv::waitKey(30) == 27) {
             break;

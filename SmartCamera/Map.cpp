@@ -8,11 +8,12 @@
 #define PI 3.14159265
 
 Map::Map(const char *img, cv::Point cameraPos, cv::Point cameraView, double verticalAngle,
-         cv::Size frameSize, double frameScale) :
+         cv::Size frameSize, double frameScale, int yCorrection) :
         m_cameraPos(cameraPos), m_cameraView(cameraView),
         m_horisontalAngle(atan( (cameraPos.x - cameraView.x + 0.0) / (cameraPos.y - cameraView.y) )),
         m_verticalAngle(abs(verticalAngle) * PI / 180),
-        m_frameSize(frameSize), m_frameScale(frameScale)
+        m_frameSize(frameSize), m_frameScale(frameScale),
+        m_yCorrection(yCorrection)
 {
     m_map = cv::imread(img);
 
@@ -29,7 +30,7 @@ void Map::drawPositions(cv::Mat &dst, const std::vector<cv::Rect> &targets) {
     for(const auto& rect : targets) {
         cv::Point posOnCamera(              // Нижняя середина rect (Ноги человека)
                 rect.x + rect.width / 2,
-                rect.y + rect.height + 100
+                rect.y + rect.height + m_yCorrection
         );
         double hAngle = m_horisontalAngle - (posOnCamera.x - m_frameSize.width / 2.0) / m_frameScale; // угол по горизонтали
         double vAngle = m_verticalAngle + (posOnCamera.y - m_frameSize.height / 2.0) / m_frameScale;  // угол по вертикали
